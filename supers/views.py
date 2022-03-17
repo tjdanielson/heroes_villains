@@ -1,8 +1,10 @@
+from functools import partial
+from importlib.resources import path
 from rest_framework.decorators import APIView
 
 from super_types.models import SuperType
-from .serializers import SuperSerializer
-from .models import Super
+from .serializers import PowerSerializer, SuperSerializer
+from .models import Power, Super
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
@@ -63,6 +65,13 @@ class SuperDetail(APIView):
         super = self.get_object(pk)
         super.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def patch(self, request, pk, pk2):
+        super = self.get_object(pk)
+        power = Power.objects.get(pk=pk2)
+        super.powers.add(power)
+        return Response(status=status.HTTP_201_CREATED)
+
 
     
 

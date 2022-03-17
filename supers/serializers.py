@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Super
+from .models import Power, Super
 
 class SuperSerializer(serializers.ModelSerializer):
     class Meta:
@@ -8,6 +8,14 @@ class SuperSerializer(serializers.ModelSerializer):
         depth = 1
 
     super_type_id = serializers.IntegerField(write_only=True)
-        
+
+class PowerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Power
+        fields = ['id', 'name']
+        depth = 1
+
+    # super_id = serializers.IntegerField(write_only=True)
+    # power_id = serializers.IntegerField(write_only=True)
 
 
