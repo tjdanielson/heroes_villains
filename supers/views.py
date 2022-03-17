@@ -1,4 +1,6 @@
 from rest_framework.decorators import APIView
+
+from super_types.models import SuperType
 from .serializers import SuperSerializer
 from .models import Super
 from django.http import Http404
@@ -11,10 +13,23 @@ class SuperList(APIView):
     def get(self, request):
         type_param = request.query_params.get('type')
         supers = Super.objects.all()
+        custom_response = {}
+        super_types = SuperType.objects.all()
         if type_param:
             supers = supers.filter(super_type__type=type_param)
-        serializer = SuperSerializer(supers, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK) 
+            serializer = SuperSerializer(supers, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            for super_type in super_types:
+                heroes = Super.objects.filter(super_type_id=1)
+                hero_serializer = SuperSerializer(heroes, many=True)
+                villians = Super.objects.filter(super_type_id=2)
+                villian_serializer = SuperSerializer(villians, many=True)
+                custom_response = {
+                    "heroes": hero_serializer.data,
+                    "villians": villian_serializer.data
+                }
+            return Response(custom_response)
 
     def post(self, request):
         serializer = SuperSerializer(data=request.data)
