@@ -29,7 +29,7 @@ class SuperList(APIView):
                     "heroes": hero_serializer.data,
                     "villians": villian_serializer.data
                 }
-            return Response(custom_response)
+            return Response(custom_response, status=status.HTTP_200_OK)
 
     def post(self, request):
         serializer = SuperSerializer(data=request.data)
