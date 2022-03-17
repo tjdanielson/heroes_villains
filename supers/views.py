@@ -9,7 +9,10 @@ from rest_framework import status
 class SuperList(APIView):
 
     def get(self, request):
+        type_param = request.query_params.get('type')
         supers = Super.objects.all()
+        if type_param:
+            supers = supers.filter(super_type__type=type_param)
         serializer = SuperSerializer(supers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK) 
 
