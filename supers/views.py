@@ -9,8 +9,9 @@ from rest_framework import status
 class SuperList(APIView):
 
     def get(self, request):
-        serializer = SuperSerializer(data=request.data)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        supers = Super.objects.all()
+        serializer = SuperSerializer(supers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK) 
 
     def post(self, request):
         serializer = SuperSerializer(data=request.data)
