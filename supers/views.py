@@ -53,7 +53,7 @@ class SuperDetail(APIView):
 
     def put(self, request, pk):
         super = self.get_object(pk)
-        serializer = SuperSerializer(data=request.data)
+        serializer = SuperSerializer(super, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
