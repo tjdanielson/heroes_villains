@@ -27,7 +27,7 @@ class SuperList(APIView):
                 villian_serializer = SuperSerializer(villians, many=True)
                 custom_response = {
                     "heroes": hero_serializer.data,
-                    "villians": villian_serializer.data
+                    "villains": villian_serializer.data
                 }
             return Response(custom_response, status=status.HTTP_200_OK)
 
