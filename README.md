@@ -38,3 +38,11 @@ Bonus1:
 Create a "Power" model & "powers" many to many field on the supers model that allows association of many powers to a super. 
 
 Create a patch endpoint for the supers app that allows you to add a new Power to a Super by submitting the PK of the hero and the new power as path variables.
+
+Bonus 2:
+
+Create an endpoint that allows you to pass in a hero name and villain name as Query params.
+
+Query for each of the submitted Supers and compare their number of powers. Whoever has more powers listed is the winner
+
+Send back a custom object response that contains a 'winner' key containing the winner's info and a 'loser' key containing the loser's info, or a different message if it is a tie.
