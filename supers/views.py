@@ -88,8 +88,8 @@ class SuperFight(APIView):
             raise Http404
 
     def get_power_count(self, super):
-        count_of_powers = Super.objects.annotate(powers_count=Count('powers')).filter(id=super.id)
-        count = count_of_powers[0].powers_count
+        count_of_powers = Super.objects.annotate(powers_count=Count('powers')).get(id=super.id)
+        count = count_of_powers.powers_count
         return count
 
     def get(self, request, hero, villain):
