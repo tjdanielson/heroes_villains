@@ -105,23 +105,21 @@ class SuperFight(APIView):
         super_two = self.get_super(super_two)
         valid_fight = self.determine_valid_fight(super_one, super_two)
         if valid_fight == False:
-            return Response('These are both heroes or villains! They don\'t fight each other! Try again...')
+            return Response(f'The supers you chose are both {super_one.super_type.type}s. They don\'t fight each other! Try again...')
         super_one_powers = self.get_power_count(super_one)
         super_two_powers = self.get_power_count(super_two)
-        super_one_serializer = SuperSerializer(super_one)
-        super_two_serializer = SuperSerializer(super_two)
         if super_one_powers == super_two_powers:
             custom_response = "IT IS A DRAW!"
         elif super_one_powers > super_two_powers:
-            custom_response = {
-                "winner": super_one_serializer.data,
-                "loser": super_two_serializer.data
-            }
+            winner_serializer = SuperSerializer(super_one)
+            loser_serializer = SuperSerializer(super_two)
         else:
-             custom_response = {
-                "winner": super_two_serializer.data,
-                "loser": super_one_serializer.data
-            }
+            winner_serializer = SuperSerializer(super_two)
+            loser_serializer = SuperSerializer(super_one)
+        custom_response = {
+            "WINNER": winner_serializer.data,
+            "LOSER": loser_serializer.data
+        }
         return Response(custom_response, status=status.HTTP_200_OK)
         
 
