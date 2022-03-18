@@ -105,7 +105,10 @@ class SuperFight(APIView):
         super_two = self.get_super(super_two)
         valid_fight = self.determine_valid_fight(super_one, super_two)
         if valid_fight == False:
-            return Response(f'The supers you chose are both {super_one.super_type.type}s. They don\'t fight each other! Try again...')
+            if super_one.super_type_id == 1:
+                return Response(f'The supers you chose are both {super_one.super_type.type}s. Legally, they are not allowed to fight each other! Try again...', status=status.HTTP_451_UNAVAILABLE_FOR_LEGAL_REASONS)
+            else:
+                return Response(f'The supers you chose are both {super_one.super_type.type}s. Villains get too unruly and we refuse to host villain on villain battles until they promise to clean up after themseles.', status=status.HTTP_418_IM_A_TEAPOT)
         super_one_powers = self.get_power_count(super_one)
         super_two_powers = self.get_power_count(super_two)
         if super_one_powers == super_two_powers:
