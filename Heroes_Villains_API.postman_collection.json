@@ -188,7 +188,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/supers/11/",
+							"raw": "http://127.0.0.1:8000/api/supers/7/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -200,7 +200,7 @@
 							"path": [
 								"api",
 								"supers",
-								"11",
+								"7",
 								""
 							]
 						}
@@ -222,7 +222,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/api/supers/18/3/",
+							"raw": "http://127.0.0.1:8000/api/supers/5/5/",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -234,8 +234,34 @@
 							"path": [
 								"api",
 								"supers",
-								"18",
-								"3",
+								"5",
+								"5",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Super_Fight",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/supers/Dr. Octopus/Joker Two/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"supers",
+								"Dr. Octopus",
+								"Joker Two",
 								""
 							]
 						}
