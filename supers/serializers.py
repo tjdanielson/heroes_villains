@@ -9,13 +9,5 @@ class SuperSerializer(serializers.ModelSerializer):
 
     super_type_id = serializers.IntegerField(write_only=True)
 
-class PowerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Power
-        fields = ['id', 'name']
-        depth = 1
-
-    # super_id = serializers.IntegerField(write_only=True)
-    # power_id = serializers.IntegerField(write_only=True)
 
 

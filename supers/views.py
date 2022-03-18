@@ -1,9 +1,7 @@
-from functools import partial
-from importlib.resources import path
-from rest_framework.decorators import APIView
 
+from rest_framework.decorators import APIView
 from super_types.models import SuperType
-from .serializers import PowerSerializer, SuperSerializer
+from .serializers import SuperSerializer
 from .models import Power, Super
 from django.http import Http404
 from rest_framework.response import Response
@@ -48,6 +46,12 @@ class SuperDetail(APIView):
         except Super.DoesNotExist:
             raise Http404
 
+    def get_power(self, pk):
+        try:
+            return Power.objects.get(pk=pk)
+        except Power.DoesNotExist:
+            raise Http404
+
     def get(self, request, pk):
         super = self.get_object(pk)
         serializer = SuperSerializer(super)
@@ -68,9 +72,10 @@ class SuperDetail(APIView):
 
     def patch(self, request, pk, pk2):
         super = self.get_object(pk)
-        power = Power.objects.get(pk=pk2)
+        power = self.get_power(pk2)
         super.powers.add(power)
-        return Response(status=status.HTTP_201_CREATED)
+        serializer = SuperSerializer(super)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
     
