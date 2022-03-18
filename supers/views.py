@@ -89,7 +89,8 @@ class SuperFight(APIView):
 
     def get_power_count(self, super):
         count_of_powers = Super.objects.annotate(powers_count=Count('powers')).filter(id=super.id)
-        return count_of_powers
+        count = count_of_powers[0].powers_count
+        return count
 
     def get(self, request, hero, villain):
         hero = self.get_super(hero)
