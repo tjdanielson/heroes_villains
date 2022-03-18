@@ -86,30 +86,41 @@ class SuperFight(APIView):
             return Super.objects.get(name=super)
         except Super.DoesNotExist:
             raise Http404
+    
+    def determine_valid_fight(self, super_one, super_two):
+        super_one_type = super_one.super_type
+        super_two_type = super_two.super_type
+        if super_one_type == super_two_type:
+            return False
+        else:
+            return True
 
     def get_power_count(self, super):
         count_of_powers = Super.objects.annotate(powers_count=Count('powers')).get(id=super.id)
         count = count_of_powers.powers_count
         return count
 
-    def get(self, request, hero, villain):
-        hero = self.get_super(hero)
-        villain = self.get_super(villain)
-        hero_powers = self.get_power_count(hero)
-        villain_powers = self.get_power_count(villain)
-        hero_serializer = SuperSerializer(hero)
-        villain_serializer = SuperSerializer(villain)
-        if hero_powers == villain_powers:
+    def get(self, request, super_one, super_two):
+        super_one = self.get_super(super_one)
+        super_two = self.get_super(super_two)
+        valid_fight = self.determine_valid_fight(super_one, super_two)
+        if valid_fight == False:
+            return Response('These are both heroes or villains! They don\'t fight each other! Try again...')
+        super_one_powers = self.get_power_count(super_one)
+        super_two_powers = self.get_power_count(super_two)
+        super_one_serializer = SuperSerializer(super_one)
+        super_two_serializer = SuperSerializer(super_two)
+        if super_one_powers == super_two_powers:
             custom_response = "IT IS A DRAW!"
-        elif hero_powers > villain_powers:
+        elif super_one_powers > super_two_powers:
             custom_response = {
-                "winner": hero_serializer.data,
-                "loser": villain_serializer.data
+                "winner": super_one_serializer.data,
+                "loser": super_two_serializer.data
             }
         else:
              custom_response = {
-                "winner": villain_serializer.data,
-                "loser": hero_serializer.data
+                "winner": super_two_serializer.data,
+                "loser": super_one_serializer.data
             }
         return Response(custom_response, status=status.HTTP_200_OK)
         
