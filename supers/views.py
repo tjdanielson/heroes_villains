@@ -97,14 +97,21 @@ class SuperFight(APIView):
         villain = self.get_super(villain)
         hero_powers = self.get_power_count(hero)
         villain_powers = self.get_power_count(villain)
-        winner = ''
+        hero_serializer = SuperSerializer(hero)
+        villain_serializer = SuperSerializer(villain)
         if hero_powers == villain_powers:
-            winner = 'DRAW'
+            custom_response = "IT IS A DRAW!"
         elif hero_powers > villain_powers:
-            winner = hero
+            custom_response = {
+                "winner": hero_serializer.data,
+                "loser": villain_serializer.data
+            }
         else:
-            winner = villain
-        return winner
+             custom_response = {
+                "winner": villain_serializer.data,
+                "loser": hero_serializer.data
+            }
+        return Response(custom_response, status=status.HTTP_200_OK)
         
 
 
