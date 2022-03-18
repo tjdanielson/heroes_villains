@@ -1,4 +1,5 @@
 
+from django.db.models import Count
 from rest_framework.decorators import APIView
 from super_types.models import SuperType
 from .serializers import SuperSerializer
@@ -76,6 +77,37 @@ class SuperDetail(APIView):
         super.powers.add(power)
         serializer = SuperSerializer(super)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class SuperFight(APIView):
+
+    def get_super(self, super):
+        try:
+            return Super.objects.get(name=super)
+        except Super.DoesNotExist:
+            raise Http404
+
+    def get_power_count(self, super):
+        count_of_powers = Super.objects.annotate(powers_count=Count('powers')).filter(id=super.id)
+        return count_of_powers
+
+    def get(self, request, hero, villain):
+        hero = self.get_super(hero)
+        villain = self.get_super(villain)
+        hero_powers = self.get_power_count(hero)
+        villain_powers = self.get_power_count(villain)
+        winner = ''
+        if hero_powers == villain_powers:
+            winner = 'DRAW'
+        elif hero_powers > villain_powers:
+            winner = hero
+        else:
+            winner = villain
+        return winner
+        
+
+
+
 
 
     
